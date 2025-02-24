@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: insuranceapp-deploy
+  labels:
+    app: insuranceapp-app  # Ensure this label is the same as in the Service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: insuranceapp-app  # This selector should match the label in your Service
+  template:
+    metadata:
+      labels:
+        app: insuranceapp-app  # Ensure this label is the same as in the Service
+    spec:
+      containers:
+      - name: insuranceapp-container
+        image: devsaikiran24/insuranceapp:latest  # Correct image name here
+        ports:
+        - containerPort: 8081
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: insuranceapp-np-service
+  labels:
+    app: insuranceapp-app  # Ensure this label matches the one in your Deployment
+spec:
+  selector:
+    app: insuranceapp-app  # Selector should match the app label from your 
+
+  type: NodePort
+  ports:
+  - nodePort: 31032
+    port: 8081
+    targetPort: 8081
+
+    targetPort: 8081
